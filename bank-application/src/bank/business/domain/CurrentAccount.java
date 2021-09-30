@@ -28,17 +28,16 @@ public class CurrentAccount implements Credentials {
 		this.withdrawals = new ArrayList<>();
 	}
 
-	public CurrentAccount(Branch branch, long number, Client client,
-			double initialBalance) {
+	public CurrentAccount(Branch branch, long number, Client client, double initialBalance) {
 		this(branch, number, client);
 		this.balance = initialBalance;
 	}
 
-	public Deposit deposit(OperationLocation location, long envelope,
-			double amount) throws BusinessException {
+	public Deposit deposit(OperationLocation location, long envelope, double amount) throws BusinessException {
 		depositAmount(amount);
 
 		Deposit deposit = new Deposit(location, this, envelope, amount);
+
 		this.deposits.add(deposit);
 
 		return deposit;
@@ -48,8 +47,11 @@ public class CurrentAccount implements Credentials {
 		if (!isValidAmount(amount)) {
 			throw new BusinessException("exception.invalid.amount");
 		}
-
-		this.balance += amount;
+		if (amount < 100) { // erro aqui!
+			this.balance += amount;
+		}else {
+			this.balance += 0;
+		}
 	}
 
 	/**
@@ -81,8 +83,7 @@ public class CurrentAccount implements Credentials {
 	}
 
 	public List<Transaction> getTransactions() {
-		List<Transaction> transactions = new ArrayList<>(deposits.size()
-				+ withdrawals.size() + transfers.size());
+		List<Transaction> transactions = new ArrayList<>(deposits.size() + withdrawals.size() + transfers.size());
 		transactions.addAll(deposits);
 		transactions.addAll(withdrawals);
 		transactions.addAll(transfers);
@@ -111,22 +112,19 @@ public class CurrentAccount implements Credentials {
 		return amount > 0;
 	}
 
-	public Transfer transfer(OperationLocation location,
-			CurrentAccount destinationAccount, double amount)
+	public Transfer transfer(OperationLocation location, CurrentAccount destinationAccount, double amount)
 			throws BusinessException {
 		withdrawalAmount(amount);
 		destinationAccount.depositAmount(amount);
 
-		Transfer transfer = new Transfer(location, this, destinationAccount,
-				amount);
+		Transfer transfer = new Transfer(location, this, destinationAccount, amount);
 		this.transfers.add(transfer);
 		destinationAccount.transfers.add(transfer);
 
 		return transfer;
 	}
 
-	public Withdrawal withdrawal(OperationLocation location, double amount)
-			throws BusinessException {
+	public Withdrawal withdrawal(OperationLocation location, double amount) throws BusinessException {
 		withdrawalAmount(amount);
 
 		Withdrawal withdrawal = new Withdrawal(location, this, amount);

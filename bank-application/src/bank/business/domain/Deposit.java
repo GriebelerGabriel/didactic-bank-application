@@ -13,6 +13,7 @@ public class Deposit extends Transaction {
 		super(location, account, amount);
 		this.envelope = envelope;
 	}
+	
 
 	/**
 	 * @return the envelope
