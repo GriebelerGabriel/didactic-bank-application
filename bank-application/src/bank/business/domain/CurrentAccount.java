@@ -33,24 +33,22 @@ public class CurrentAccount implements Credentials {
 		this.balance = initialBalance;
 	}
 
-	public Deposit deposit(OperationLocation location, long envelope, double amount) throws BusinessException {
-		depositAmount(amount);
+	public Deposit deposit(OperationLocation location, long envelope, double amount, double pendentAmount, int status) throws BusinessException {
+		depositAmount(amount, pendentAmount);
 
-		Deposit deposit = new Deposit(location, this, envelope, amount);
+		Deposit deposit = new Deposit(location, this, envelope, amount, pendentAmount, status);
 
 		this.deposits.add(deposit);
 
 		return deposit;
 	}
 
-	private void depositAmount(double amount) throws BusinessException {
-		if (!isValidAmount(amount)) {
+	private void depositAmount(double amount, double pendentAmount) throws BusinessException {
+		if (!isValidAmount(amount, pendentAmount)) {
 			throw new BusinessException("exception.invalid.amount");
 		}
-		if (amount < 100) { // erro aqui!
+		if (amount < 100) {
 			this.balance += amount;
-		}else {
-			this.balance += 0;
 		}
 	}
 
@@ -108,14 +106,18 @@ public class CurrentAccount implements Credentials {
 		return amount <= balance;
 	}
 
-	private boolean isValidAmount(double amount) {
-		return amount > 0;
+	private boolean isValidAmount(double amount, double pendentAmount) {
+		if(amount > 0 || pendentAmount > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public Transfer transfer(OperationLocation location, CurrentAccount destinationAccount, double amount)
 			throws BusinessException {
 		withdrawalAmount(amount);
-		destinationAccount.depositAmount(amount);
+		destinationAccount.depositAmount(amount, 0);
 
 		Transfer transfer = new Transfer(location, this, destinationAccount, amount);
 		this.transfers.add(transfer);
@@ -134,7 +136,7 @@ public class CurrentAccount implements Credentials {
 	}
 
 	private void withdrawalAmount(double amount) throws BusinessException {
-		if (!isValidAmount(amount)) {
+		if (!isValidAmount(amount, 0)) {
 			throw new BusinessException("exception.invalid.amount");
 		}
 

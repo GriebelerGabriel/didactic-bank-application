@@ -36,12 +36,12 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 
 	@Override
 	public Deposit deposit(long operationLocation, long branch,
-			long accountNumber, long envelope, double amount)
+			long accountNumber, long envelope, double amount, double pendentAmount, int status)
 			throws BusinessException {
 		CurrentAccount currentAccount = readCurrentAccount(branch,
 				accountNumber);
 		Deposit deposit = currentAccount.deposit(
-				getOperationLocation(operationLocation), envelope, amount);
+				getOperationLocation(operationLocation), envelope, amount, pendentAmount, status);
 		return deposit;
 	}
 

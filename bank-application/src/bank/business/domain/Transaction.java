@@ -12,14 +12,12 @@ public abstract class Transaction {
 	private double amount, pendentAmount = 0;
 	private Date date;
 	private OperationLocation location;
-	private int status = 2; // 1 = finalizada, 2 = pendente e 3 = cancelada
 
 	protected Transaction(OperationLocation location, CurrentAccount account, double amount) {
 		this.location = location;
 		this.date = new Date(System.currentTimeMillis());
 		this.account = account;
 		this.amount = amount;
-
 	}
 	
 
@@ -58,14 +56,6 @@ public abstract class Transaction {
 	 */
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	public double getPendentAmount() {

@@ -95,8 +95,8 @@ public class DepositAction extends AccountAbstractAction {
 
 				Deposit deposit = accountOperationService.deposit(bankInterface.getOperationLocation().getNumber(),
 						((Number) branch.getValue()).longValue(), ((Number) accountNumber.getValue()).longValue(),
-						((Number) envelope.getValue()).intValue(), ((Number) amount.getValue()).doubleValue());
-				deposit.setStatus(3);
+						((Number) envelope.getValue()).intValue(), ((Number) amount.getValue()).doubleValue(), 0, 1);
+			//	deposit.setStatus(3);
 
 				StringBuffer sb = new StringBuffer();
 				sb.append(textManager.getText("message.operation.succesfull")).append("\n");
@@ -114,8 +114,8 @@ public class DepositAction extends AccountAbstractAction {
 
 					Deposit deposit = accountOperationService.deposit(bankInterface.getOperationLocation().getNumber(),
 							((Number) branch.getValue()).longValue(), ((Number) accountNumber.getValue()).longValue(),
-							((Number) envelope.getValue()).intValue(), ((Number) amount.getValue()).doubleValue());
-					deposit.setStatus(2);
+							((Number) envelope.getValue()).intValue(), ((Number) amount.getValue()).doubleValue(), 0, 2);
+				//	deposit.setStatus(2);
 
 					StringBuffer sb = new StringBuffer();
 					sb.append(textManager.getText("message.operation.succesfull")).append("\n");
@@ -132,9 +132,9 @@ public class DepositAction extends AccountAbstractAction {
 
 					Deposit deposit = accountOperationService.deposit(bankInterface.getOperationLocation().getNumber(),
 							((Number) branch.getValue()).longValue(), ((Number) accountNumber.getValue()).longValue(),
-							((Number) envelope.getValue()).intValue(), ((Number) amount.getValue()).doubleValue());
+							((Number) envelope.getValue()).intValue(), 0, ((Number) amount.getValue()).doubleValue(), 2);
 
-					deposit.setStatus(2);
+					//deposit.setStatus();
 					deposit.setPendentAmount(((Number) amount.getValue()).doubleValue());
 
 					StringBuffer sb = new StringBuffer();
