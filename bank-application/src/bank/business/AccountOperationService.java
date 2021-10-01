@@ -30,7 +30,10 @@ public interface AccountOperationService {
 
 	public List<Transaction> getStatementByMonth(long branch,
 			long accountNumber, int month, int year) throws BusinessException;
-
+	
+	public List<Deposit> getPendentDeposits(long branch,
+			long accountNumber) throws BusinessException;
+	
 	public CurrentAccount login(long branch, long accountNumber, String password)
 			throws BusinessException;
 

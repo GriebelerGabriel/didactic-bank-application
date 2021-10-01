@@ -3,6 +3,7 @@
  */
 package bank.business.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -88,6 +89,20 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 			long accountNumber, Date begin, Date end) throws BusinessException {
 		return getStatementByDate(readCurrentAccount(branch, accountNumber),
 				begin, end);
+	}
+	
+	public List<Deposit> getPendentDeposits(long branch,
+			long accountNumber) throws BusinessException {
+		List<Deposit> var = readCurrentAccount(branch, accountNumber).getDeposits();
+		List<Deposit> pendents = new ArrayList<Deposit>();
+		for(Deposit D : var)
+		{
+			if(D.getStatus() == 2) 
+			{
+				pendents.add(D);
+			}
+		}
+		return pendents;		
 	}
 
 	@Override
